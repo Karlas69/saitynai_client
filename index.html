@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link href="../../client/css/style.css" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="container">
+    <div class="header clearfix">
+
+        <h3 class="text-muted">Saitynai</h3>
+    </div>
+
+    <div class="jumbotron">
+        <form role = "form" id="postForm">
+
+            <div class = "form-user">
+                <label for = "user">Vartotojas</label>
+                <input name="user" type = "text" class = "form-control" id = "user" placeholder = "Vartotojo vardas">
+            </div>
+            <div class = "form-message">
+                <label for = "message">Žinutė</label>
+                <input name="message" type = "text" class = "form-control" id = "message" placeholder = "Jūsų žinutė">
+            </div>
+            <button type = "submit" class = "btn btn-lg btn-success">Siųsti</button>
+
+        </form>
+    </div>
+    <div  class="col-sm-12">
+        Žinutės:
+        <ul id="messages">
+
+        </ul>
+    </div>
+    <footer class="footer">
+        <p>&copy; 2016 KTU</p>
+    </footer>
+
+</div> <!-- /container -->
+
+
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script >
+    $("#postForm").submit(function (e) {
+e.preventDefault()
+$.post('http://saitynai2.tru.lt/api/posts', $('#postForm').serialize()).done(function () {
+    $('#messages').html('');
+    getPosts()
+})
+});
+
+    $(document).ready(function () {
+        getPosts()
+    });
+
+    function getPosts() {
+        $.ajax({
+            url: 'http://saitynai2.tru.lt/api/posts'
+        }).done(function (data) {
+            $.each(data, function (i, e) {
+                $('#messages').prepend('<li>' + e.user + ': ' + e.message + '</li>')
+            })
+        })
+    }
+
+</script>
+
+
+</body>
+</html>
